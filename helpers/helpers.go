@@ -8,6 +8,10 @@ import (
 	"strings"
 )
 
+type Solver interface {
+	Solve()
+}
+
 // Functions to return slices or slices of slices (blocks)
 func GetInput(day int) (string, error) {
 	if day > 0 && day <= 25 {
@@ -27,6 +31,17 @@ func GetInput(day int) (string, error) {
 		}
 	} else {
 		return "", errors.New("not a valid day")
+	}
+}
+
+func GetInputFromString(day string) (string, error) {
+	path := "./inputs/" + day + ".txt"
+
+	input, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	} else {
+		return string(input), nil
 	}
 }
 
