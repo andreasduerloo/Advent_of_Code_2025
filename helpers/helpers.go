@@ -1,7 +1,6 @@
 package helpers
 
 import (
-	"errors"
 	"os"
 	"regexp"
 	"strconv"
@@ -13,27 +12,6 @@ type Solver interface {
 }
 
 // Functions to return slices or slices of slices (blocks)
-func GetInput(day int) (string, error) {
-	if day > 0 && day <= 25 {
-		dayString := strconv.Itoa(day)
-
-		if len(dayString) == 1 {
-			dayString = "0" + dayString
-		}
-
-		path := "./inputs/" + dayString + ".txt"
-
-		input, err := os.ReadFile(path)
-		if err != nil {
-			return "", err
-		} else {
-			return string(input), nil
-		}
-	} else {
-		return "", errors.New("not a valid day")
-	}
-}
-
 func GetInputFromString(day string) (string, error) {
 	path := "./inputs/" + day + ".txt"
 
@@ -62,8 +40,8 @@ func ReGetInts(s string) []int {
 	return ints
 }
 
-func SliceOfInts(day int) ([]int, error) {
-	s, err := GetInput(day)
+func SliceOfInts(day string) ([]int, error) {
+	s, err := GetInputFromString(day)
 	out := []int{}
 
 	if err != nil {
@@ -75,8 +53,8 @@ func SliceOfInts(day int) ([]int, error) {
 	return out, nil
 }
 
-func SlicesOfInts(day int) ([][]int, error) {
-	s, err := GetInput(day)
+func SlicesOfInts(day string) ([][]int, error) {
+	s, err := GetInputFromString(day)
 	out := [][]int{}
 
 	if err != nil {
@@ -92,8 +70,8 @@ func SlicesOfInts(day int) ([][]int, error) {
 	return out, nil
 }
 
-func SliceOfStrings(day int) ([]string, error) {
-	s, err := GetInput(day)
+func SliceOfStrings(day string) ([]string, error) {
+	s, err := GetInputFromString(day)
 	out := []string{}
 
 	if err != nil {
@@ -105,8 +83,8 @@ func SliceOfStrings(day int) ([]string, error) {
 	return out, nil
 }
 
-func SlicesOfStrings(day int) ([][]string, error) {
-	s, err := GetInput(day)
+func SlicesOfStrings(day string) ([][]string, error) {
+	s, err := GetInputFromString(day)
 	out := [][]string{}
 
 	if err != nil {
