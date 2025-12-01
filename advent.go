@@ -25,7 +25,7 @@ func main() {
 		fmt.Println("The argument is not an integer - exiting.")
 	}
 
-	if day > 0 && day < len(solutions) {
+	if day > 0 && day <= len(solutions) {
 		fmt.Println("Solutions for day", day)
 		solutions[day-1].Solve()
 	} else {
