@@ -40,6 +40,23 @@ func ReGetInts(s string) []int {
 	return ints
 }
 
+func ReGetPureInts(s string) []int {
+	re := regexp.MustCompile(`[0-9]+`)
+	matches := re.FindAllString(s, -1)
+
+	ints := make([]int, 0)
+
+	for _, match := range matches {
+		val, err := strconv.Atoi(match)
+		if err != nil {
+			continue
+		}
+		ints = append(ints, val)
+	}
+
+	return ints
+}
+
 func SliceOfInts(day string) ([]int, error) {
 	s, err := GetInputFromString(day)
 	out := []int{}
@@ -49,6 +66,19 @@ func SliceOfInts(day string) ([]int, error) {
 	}
 
 	out = ReGetInts(s)
+
+	return out, nil
+}
+
+func SliceOfPureInts(day string) ([]int, error) {
+	s, err := GetInputFromString(day)
+	out := []int{}
+
+	if err != nil {
+		return out, err
+	}
+
+	out = ReGetPureInts(s)
 
 	return out, nil
 }
