@@ -2,7 +2,7 @@
 
 ## Progress
 
-Total score: 2/24 :star:
+Total score: 4/24 :star:
 
 ## Solutions
 
