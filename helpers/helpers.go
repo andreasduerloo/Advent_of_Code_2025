@@ -129,3 +129,23 @@ func SlicesOfStrings(day string) ([][]string, error) {
 
 	return out, nil
 }
+
+func MapSlice[T, U any](s []T, f func(T) U) []U {
+	out := make([]U, 0, len(s))
+
+	for _, elem := range s {
+		out = append(out, f(elem))
+	}
+
+	return out
+}
+
+func ReduceSlice[T any](s []T, f func(T, T) T) T {
+	var acc T
+
+	for _, elem := range s {
+		acc = f(elem, acc)
+	}
+
+	return acc
+}

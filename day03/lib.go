@@ -28,7 +28,32 @@ func highestJoltage(b bank, current, needed int) int {
 		}
 	} else {
 		var localMax int
-		for i, batt := range b {
+		for i, batt := range b[:len(b)-(needed-1)] { // We need enough space at the end for the remaining digits
+			if batt > localMax {
+				localMax = batt
+				option := highestJoltage(b[i+1:], 10*current+batt, needed-1)
+				if option > highest {
+					highest = option
+				}
+			}
+		}
+	}
+
+	return highest
+}
+
+func highestJoltageFullRange(b bank, current, needed int) int {
+	var highest int
+
+	if needed == 1 {
+		for _, batt := range b {
+			if 10*current+batt > highest {
+				highest = 10*current + batt
+			}
+		}
+	} else {
+		var localMax int
+		for i, batt := range b { // Barely a performance difference
 			if batt > localMax {
 				localMax = batt
 				option := highestJoltage(b[i+1:], 10*current+batt, needed-1)
