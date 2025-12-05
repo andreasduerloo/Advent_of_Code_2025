@@ -23,9 +23,23 @@ func overlap(r1, r2 idRange) bool {
 }
 
 func union(r1, r2 idRange) idRange {
+	var newLow, newHigh int
+
+	if r1.low <= r2.low {
+		newLow = r1.low
+	} else {
+		newLow = r2.low
+	}
+
+	if r1.high >= r2.high {
+		newHigh = r1.high
+	} else {
+		newHigh = r2.high
+	}
+
 	return idRange{
-		low:  slices.Min([]int{r1.low, r2.low}),
-		high: slices.Max([]int{r1.high, r2.high}),
+		low:  newLow,
+		high: newHigh,
 	}
 }
 
