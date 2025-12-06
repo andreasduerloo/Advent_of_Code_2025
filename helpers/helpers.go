@@ -113,6 +113,23 @@ func SliceOfStrings(day string) ([]string, error) {
 	return out, nil
 }
 
+func SliceOfStringsNoTrim(day string) ([]string, error) {
+	s, err := GetInputFromString(day)
+	out := []string{}
+
+	if err != nil {
+		return out, err
+	}
+
+	out = strings.Split(s, "\n")
+
+	if out[len(out)-1] == "" {
+		out = out[:len(out)-1]
+	}
+
+	return out, nil
+}
+
 func SlicesOfStrings(day string) ([][]string, error) {
 	s, err := GetInputFromString(day)
 	out := [][]string{}

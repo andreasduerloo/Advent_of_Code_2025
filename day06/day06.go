@@ -25,8 +25,24 @@ func (d day) Solve() {
 
 	data, err := helpers.SlicesOfInts(file)
 	if err != nil {
-		fmt.Println("issue transforming the input")
+		fmt.Println("issue getting the input")
+	}
+	data = data[:len(data)-1] // Trim the last, empty slice
+
+	operators, err := getOperators(file)
+
+	first := calculate(data, operators)
+
+	// For the second star we have to start all over with the input
+	dataSecondStar, err := helpers.SliceOfStringsNoTrim(file)
+	if err != nil {
+		fmt.Println("issue getting the input")
 	}
 
-	fmt.Println(data)
+	operations := transform(dataSecondStar)
+
+	results := helpers.MapSlice(operations, (*operation).calculate)
+	second := helpers.ReduceSlice(results, func(r, acc int) int { return r + acc })
+
+	fmt.Println(first, second)
 }
