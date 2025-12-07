@@ -56,7 +56,7 @@ func calculate(data [][]int, operators []string) int {
 	return out
 }
 
-// Second star
+// Second star - TODO, adapt the solution for the first star to use the operation struct
 
 type operation struct {
 	operands  []int

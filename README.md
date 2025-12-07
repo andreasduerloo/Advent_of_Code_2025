@@ -2,7 +2,7 @@
 
 ## Progress
 
-Total score: 12/24 :star:
+Total score: 14/24 :star:
 
 ## Solutions
 
@@ -12,3 +12,4 @@ Total score: 12/24 :star:
 - [X] Day 4: [Printing Department](https://github.com/andreasduerloo/Advent_of_Code_2025/tree/main/day04) :star::star:
 - [X] Day 5: [Cafeteria](https://github.com/andreasduerloo/Advent_of_Code_2025/tree/main/day05) :star::star:
 - [X] Day 6: [Trash Compactor](https://github.com/andreasduerloo/Advent_of_Code_2025/tree/main/day06) :star::star:
+- [X] Day 7: [Laboratories](https://github.com/andreasduerloo/Advent_of_Code_2025/tree/main/day07) :star::star:

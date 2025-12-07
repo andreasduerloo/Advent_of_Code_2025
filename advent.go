@@ -7,6 +7,7 @@ import (
 	"advent/day04"
 	"advent/day05"
 	"advent/day06"
+	"advent/day07"
 	"advent/helpers"
 	"fmt"
 	"os"
@@ -20,6 +21,7 @@ var solutions = []helpers.Solver{
 	day04.Config,
 	day05.Config,
 	day06.Config,
+	day07.Config,
 }
 
 func main() {
