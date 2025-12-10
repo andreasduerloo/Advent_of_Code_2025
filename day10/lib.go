@@ -7,8 +7,10 @@ import (
 )
 
 type machine struct {
-	goal    int // Let's do some bitwise operations
-	buttons []button
+	goal        int // Let's do some bitwise operations
+	joltGoal    []int
+	buttons     []button
+	joltButtons []joltButton
 }
 
 type button struct {
@@ -27,6 +29,7 @@ type state struct {
 func transform(lines []string) []machine {
 	lightsRe := regexp.MustCompile(`[#.]+`)
 	buttonRe := regexp.MustCompile(`\([^(]*\)`)
+	joltageRe := regexp.MustCompile(`\{.*\}`)
 
 	out := make([]machine, 0, len(lines))
 
@@ -58,16 +61,29 @@ func transform(lines []string) []machine {
 			buttons = append(buttons, button{effect: effect})
 		}
 
+		joltButtons := make([]joltButton, 0, len(buttonmatches))
+
+		for _, jb := range buttonmatches {
+			joltButtons = append(joltButtons, joltButton{
+				effect: helpers.ReGetInts(jb),
+			})
+		}
+
+		joltageMatches := joltageRe.FindString(line)
+		joltageGoal := helpers.ReGetInts(joltageMatches)
+
 		out = append(out, machine{
-			goal:    goalInt,
-			buttons: buttons,
+			goal:        goalInt,
+			buttons:     buttons,
+			joltGoal:    joltageGoal,
+			joltButtons: joltButtons,
 		})
 	}
 
 	return out
 }
 
-func (m machine) findLeastPresses(lights, presses int) int {
+func (m machine) findLeastPresses(lights int) int {
 	// Work with a queue, with recursion it will go way too deep on the first button first
 	queue := make([]state, 0)
 
@@ -98,6 +114,91 @@ func (m machine) findLeastPresses(lights, presses int) int {
 				presses:       current.presses + 1,
 				currentLights: b.press(current.currentLights),
 			})
+		}
+		current = queue[0]
+		queue = queue[1:]
+	}
+}
+
+type joltButton struct {
+	effect []int
+}
+
+func (jb joltButton) press(values []int) {
+	for _, eff := range jb.effect {
+		values[eff] += 1
+	}
+}
+
+type joltState struct {
+	presses int
+	values  []int
+}
+
+func stillPossible(goal, values []int) bool {
+	out := true
+
+	for i, g := range goal {
+		out = out && (g >= values[i])
+	}
+
+	return out
+}
+
+func compareValues(goal, values []int) bool {
+	out := true
+
+	for i, g := range goal {
+		out = out && (g == values[i])
+	}
+
+	return out
+}
+
+func (m machine) findLeastJoltPresses() int {
+	queue := make([]joltState, 0)
+
+	// Add all the buttons to the queue (unless pusing that button once solved it)
+	for _, b := range m.joltButtons {
+		localValues := make([]int, len(m.joltGoal))
+
+		b.press(localValues)
+
+		if compareValues(m.joltGoal, localValues) {
+			return 1
+		} else {
+			queue = append(queue, joltState{
+				presses: 1,
+				values:  localValues,
+			})
+		}
+	}
+
+	// Take the top element off the queue, add all button presses to the back of the queue (unless it's fixed)
+	current := queue[0]
+	queue = queue[1:]
+
+	for {
+		for _, b := range m.joltButtons {
+			localValues := make([]int, len(current.values))
+			copy(localValues, current.values)
+
+			b.press(localValues)
+
+			if compareValues(m.joltGoal, localValues) {
+				return current.presses + 1
+			}
+
+			// No dice, add to the queue unless one of the values is too high
+			if stillPossible(m.joltGoal, current.values) {
+				newValues := make([]int, len(localValues))
+				copy(newValues, localValues)
+
+				queue = append(queue, joltState{
+					presses: current.presses + 1,
+					values:  newValues,
+				})
+			}
 		}
 		current = queue[0]
 		queue = queue[1:]

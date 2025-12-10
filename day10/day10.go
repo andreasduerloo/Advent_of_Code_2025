@@ -33,8 +33,20 @@ func (d day) Solve() {
 	var presses int
 
 	for _, m := range machines {
-		presses += m.findLeastPresses(0, 0)
+		presses += m.findLeastPresses(0)
 	}
 
 	fmt.Println(presses)
+
+	/*
+		var first, second int
+
+		for _, m := range machines {
+			first += m.findLeastPresses(0)
+			second += m.findLeastJoltPresses()
+			fmt.Println("Found one")
+		}
+
+		fmt.Println(first, second)
+	*/
 }
