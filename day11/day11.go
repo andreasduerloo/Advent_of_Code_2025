@@ -33,4 +33,8 @@ func (d day) Solve() {
 	first := serverRoom.countPaths("you", "out")
 
 	fmt.Println(first)
+
+	// second := serverRoom.routesPassingThrough("svr", "out")
+
+	// fmt.Println(second)
 }

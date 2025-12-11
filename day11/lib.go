@@ -1,6 +1,7 @@
 package day11
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -95,6 +96,53 @@ func (sr serverRoom) countPaths(start, stop string) int {
 		} else {
 			for _, output := range present.outputs {
 				queue = append(queue, output)
+			}
+		}
+	}
+
+	return out
+}
+
+func (sr serverRoom) routesPassingThrough(start, stop string) int {
+	var out int
+
+	type state struct {
+		device *device
+		dac    bool
+		fft    bool
+	}
+
+	queue := make([]state, 0)
+
+	present := state{
+		device: sr.devices[start],
+	}
+
+	for _, output := range present.device.outputs {
+		// Add these next steps to the queue
+		queue = append(queue, state{
+			device: output,
+		})
+	}
+
+	for len(queue) != 0 {
+		present = queue[0]
+		queue = queue[1:]
+
+		if present.device.label == stop {
+			if present.dac && present.fft {
+				fmt.Println("Adding one!")
+				out++
+			}
+		} else {
+			for _, output := range present.device.outputs {
+				dac := present.dac || present.device.label == "dac"
+				fft := present.fft || present.device.label == "fft"
+				queue = append(queue, state{
+					device: output,
+					dac:    dac,
+					fft:    fft,
+				})
 			}
 		}
 	}
